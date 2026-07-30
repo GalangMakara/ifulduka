@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Custom keyframes for flickering analog film-grain */
+@keyframes noise {
+  0%, 100% { transform:translate(0, 0) }
+  10% { transform:translate(-2%, -2%) }
+  20% { transform:translate(-4%, 2%) }
+  30% { transform:translate(2%, -4%) }
+  40% { transform:translate(-2%, 4%) }
+  50% { transform:translate(-4%, 2%) }
+  60% { transform:translate(4%, 0) }
+  70% { transform:translate(0, 2%) }
+  80% { transform:translate(1%, 4%) }
+  90% { transform:translate(-4%, 2%) }
+}
+
+.film-grain {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noise)"/%3E%3C/svg%3E') repeat;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 9999;
+  animation: noise 0.5s steps(4) infinite;
+}
+
+/* Custom scrollbar black and white minimal */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #222222;
+  border-radius: 3.5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #444444;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+:root {
+  --orbit-radius: 110px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --orbit-radius: 180px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --orbit-radius: 215px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --orbit-radius: 250px;
+  }
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+}
+
+.viewfinder-corner {
+  width: 40px;
+  height: 40px;
+  border-color: rgba(255, 255, 255, 0.75);
+  position: absolute;
+}
+
+.viewfinder-corner.tl {
+  top: 55px;
+  left: 55px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.viewfinder-corner.tr {
+  top: 55px;
+  right: 55px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.viewfinder-corner.bl {
+  bottom: 55px;
+  left: 55px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.viewfinder-corner.br {
+  bottom: 55px;
+  right: 55px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+

@@ -1,0 +1,6 @@
+{
+  "name": "Videographer Portfolio",
+  "description": "Website portofolio interaktif hitam-putih untuk videografer DKV dengan navigasi animasi zoom wajah yang imersif.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
