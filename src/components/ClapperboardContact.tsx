@@ -94,31 +94,38 @@ export default function ClapperboardContact({ soundOn }: ClapperboardContactProp
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
 
             {/* ── CLAPPERBOARD ── */}
-            <div className="bg-zinc-950 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+            <div className="bg-zinc-950 border border-zinc-800 rounded-2xl overflow-visible shadow-2xl flex flex-col">
 
               {/* Clapper hinge top */}
-              <div className="relative h-20 bg-zinc-900 border-b-2 border-black overflow-hidden flex items-end">
-                <div className="absolute inset-x-0 bottom-0 h-8 bg-zinc-900 flex justify-around overflow-hidden">
-                  {[...Array(8)].map((_, i) => (
-                    <div key={`strip-b-${i}`} className="w-10 h-16 bg-white/90 transform -skew-x-[35deg] origin-bottom opacity-90" />
+              <div className="relative h-24 bg-zinc-900 border-b-2 border-black rounded-t-2xl overflow-hidden flex items-end">
+                {/* Strip bawah (statis) */}
+                <div className="absolute inset-x-0 bottom-0 h-10 bg-zinc-900 flex justify-around overflow-hidden">
+                  {[...Array(12)].map((_, i) => (
+                    <div key={`strip-b-${i}`} className="w-8 h-16 bg-white/90 transform -skew-x-[35deg] origin-bottom opacity-90" />
                   ))}
                 </div>
+                {/* Strip atas (animasi clap) */}
                 <motion.div
-                  initial={{ rotate: -20 }}
-                  animate={{ rotate: isClapping ? 0 : -20 }}
+                  initial={{ rotate: -18 }}
+                  animate={{ rotate: isClapping ? 0 : -18 }}
                   transition={{ type: 'spring', stiffness: isClapping ? 600 : 150, damping: isClapping ? 12 : 20 }}
                   style={{ originX: 0, originY: 1 }}
-                  className="absolute inset-x-0 bottom-8 h-8 bg-zinc-900 border-b border-black flex justify-around overflow-hidden z-10"
+                  className="absolute inset-x-0 bottom-10 h-10 bg-zinc-800 border-b-2 border-black flex justify-around overflow-hidden z-10"
                 >
-                  {[...Array(8)].map((_, i) => (
-                    <div key={`strip-t-${i}`} className="w-10 h-16 bg-white/90 transform -skew-x-[35deg] origin-bottom opacity-90" />
+                  {[...Array(12)].map((_, i) => (
+                    <div key={`strip-t-${i}`} className="w-8 h-16 bg-white/90 transform -skew-x-[35deg] origin-bottom opacity-90" />
                   ))}
                 </motion.div>
-                <div className="absolute left-0 bottom-6 w-4 h-12 bg-zinc-700 border border-zinc-600 rounded-sm z-20" />
+                {/* Engsel kiri */}
+                <div className="absolute left-0 bottom-5 w-4 h-14 bg-zinc-600 border border-zinc-500 rounded-sm z-20" />
+                {/* Label CLAP di tengah */}
+                <div className="absolute top-2 left-1/2 -translate-x-1/2 z-30 bg-black/60 border border-white/10 px-3 py-0.5 rounded text-[9px] font-mono text-zinc-300 tracking-widest uppercase whitespace-nowrap">
+                  SAIFUL DUKA — CLAP BOARD
+                </div>
               </div>
 
               {/* Slate body */}
-              <div className="p-6 md:p-8 flex flex-col gap-5 bg-black font-mono text-xs">
+              <div className="p-4 sm:p-6 md:p-8 flex flex-col gap-4 sm:gap-5 bg-black font-mono text-xs rounded-b-2xl border border-t-0 border-zinc-800">
 
                 {/* Metadata header */}
                 <div className="grid grid-cols-2 md:grid-cols-4 border-b border-zinc-800 pb-4 gap-4 text-center text-[10px] text-zinc-500">

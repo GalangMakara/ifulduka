@@ -99,21 +99,21 @@ export default function InteractiveGrader({ sceneImage, soundOn }: InteractiveGr
   };
 
   return (
-    <div id="interactive-grader" className="bg-black border border-zinc-800 p-6 rounded-2xl flex flex-col lg:flex-row gap-8 items-start w-full text-white font-sans">
+    <div id="interactive-grader" className="bg-black border border-zinc-800 p-4 sm:p-6 rounded-2xl flex flex-col gap-6 items-start w-full text-white font-sans">
       
-      {/* LEFT: Live Video Monitor / Canvas Frame */}
-      <div className="w-full lg:w-3/5 flex flex-col gap-3">
+      {/* TOP: Live Video Monitor */}
+      <div className="w-full flex flex-col gap-3">
         <div className="flex justify-between items-center px-1">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-zinc-400"></span>
-            <span className="text-[10px] uppercase tracking-widest font-mono text-zinc-400">LIVE MONITOR 01</span>
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-widest font-mono text-zinc-400">LIVE MONITOR 01</span>
           </div>
-          <span className="text-[10px] font-mono text-zinc-500">LUT: {settings.tint.toUpperCase()}</span>
+          <span className="text-[9px] sm:text-[10px] font-mono text-zinc-500">LUT: {settings.tint.toUpperCase()}</span>
         </div>
 
-        {/* Cinematic Frame */}
-        <div className="relative aspect-[3/4] max-h-[720px] w-full bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl mx-auto">
-          {/* Main Scenery Image with dynamically applied CSS Filters */}
+        {/* Cinematic Frame — portrait on mobile, constrained on desktop */}
+        <div className="relative w-full max-w-xs sm:max-w-sm mx-auto bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl"
+          style={{ aspectRatio: '3/4' }}>
           <img
             src={sceneImage}
             alt="Color grading simulator scene"
@@ -121,8 +121,6 @@ export default function InteractiveGrader({ sceneImage, soundOn }: InteractiveGr
             style={{ filter: getFilterStyle() }}
             referrerPolicy="no-referrer"
           />
-
-          {/* Film Grain Noise Overlay */}
           <div 
             className="absolute inset-0 pointer-events-none opacity-40 mix-blend-overlay"
             style={{
@@ -130,46 +128,36 @@ export default function InteractiveGrader({ sceneImage, soundOn }: InteractiveGr
               opacity: settings.filmGrain / 100,
             }}
           />
-
-          {/* Vignette Overlay */}
           <div
             className="absolute inset-0 pointer-events-none transition-all duration-300"
-            style={{
-              background: `radial-gradient(circle, transparent ${100 - settings.vignette}%, rgba(0,0,0,0.95) 100%)`,
-            }}
+            style={{ background: `radial-gradient(circle, transparent ${100 - settings.vignette}%, rgba(0,0,0,0.95) 100%)` }}
           />
-
-          {/* Viewfinder corner lines */}
-          <div className="absolute top-4 left-4 w-3 h-3 border-t border-l border-white/40"></div>
-          <div className="absolute top-4 right-4 w-3 h-3 border-t border-r border-white/40"></div>
-          <div className="absolute bottom-4 left-4 w-3 h-3 border-b border-l border-white/40"></div>
-          <div className="absolute bottom-4 right-4 w-3 h-3 border-b border-r border-white/40"></div>
-
-          {/* Interactive Exposure meter display */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur border border-white/10 px-3 py-1 rounded text-[9px] font-mono flex items-center gap-2">
-            <span className="text-zinc-500">-2</span>
-            <span className="text-zinc-500">-1</span>
+          <div className="absolute top-3 left-3 w-3 h-3 border-t border-l border-white/40"></div>
+          <div className="absolute top-3 right-3 w-3 h-3 border-t border-r border-white/40"></div>
+          <div className="absolute bottom-3 left-3 w-3 h-3 border-b border-l border-white/40"></div>
+          <div className="absolute bottom-3 right-3 w-3 h-3 border-b border-r border-white/40"></div>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur border border-white/10 px-2 py-1 rounded text-[8px] font-mono flex items-center gap-1.5">
+            <span className="text-zinc-500">-2</span><span className="text-zinc-500">-1</span>
             <div className="flex gap-0.5 items-center">
               <div className={`w-1 h-2 ${settings.exposure < 80 ? 'bg-white' : 'bg-zinc-700'}`}></div>
               <div className={`w-1 h-3 ${settings.exposure >= 80 && settings.exposure < 110 ? 'bg-white' : 'bg-zinc-700'}`}></div>
               <div className={`w-1 h-2 ${settings.exposure >= 110 ? 'bg-white' : 'bg-zinc-700'}`}></div>
             </div>
-            <span className="text-zinc-500">+1</span>
-            <span className="text-zinc-500">+2</span>
+            <span className="text-zinc-500">+1</span><span className="text-zinc-500">+2</span>
           </div>
         </div>
 
-        <div className="flex justify-between items-center text-[10px] font-mono text-zinc-500 px-1">
+        <div className="flex justify-between items-center text-[9px] font-mono text-zinc-500 px-1">
           <span>COOKE ANAMORPHIC S2</span>
-          <span>BLACK & WHITE SYSTEM 1.0</span>
+          <span>B&W SYSTEM 1.0</span>
         </div>
       </div>
 
-      {/* RIGHT: Slider Control Deck */}
-      <div className="w-full lg:w-2/5 flex flex-col gap-6">
+      {/* BOTTOM: Slider Control Deck — full width on mobile */}
+      <div className="w-full flex flex-col gap-5">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Sliders size={16} className="text-white" />
+            <Sliders size={15} className="text-white" />
             <h3 className="font-bold text-sm tracking-wider uppercase">Grading Panel</h3>
           </div>
           <button
@@ -180,124 +168,63 @@ export default function InteractiveGrader({ sceneImage, soundOn }: InteractiveGr
           </button>
         </div>
 
-        {/* presets deck */}
+        {/* LUT Presets */}
         <div className="flex flex-col gap-2">
           <span className="text-[10px] text-zinc-400 font-mono uppercase tracking-widest flex items-center gap-1.5">
             <Layers size={11} /> Look Up Tables (LUT)
           </span>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-2 gap-2 mt-1">
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mt-1">
             {LUT_PRESETS.map((lut) => (
               <button
                 key={lut.id}
                 onClick={() => applyPreset(lut.id as any)}
-                className={`p-2.5 text-left border rounded-lg transition-all text-xs flex flex-col justify-between ${
+                className={`p-2 sm:p-2.5 text-left border rounded-lg transition-all flex flex-col justify-between ${
                   settings.tint === lut.id
                     ? 'border-white bg-white text-black'
                     : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:border-zinc-700 hover:text-white'
                 }`}
               >
-                <div className="flex justify-between items-center w-full">
-                  <span className="font-bold font-mono text-[10px]">{lut.name}</span>
-                  {settings.tint === lut.id && <Check size={11} className="text-black" />}
+                <div className="flex justify-between items-center w-full gap-1">
+                  <span className="font-bold font-mono text-[9px] sm:text-[10px] leading-tight">{lut.name}</span>
+                  {settings.tint === lut.id && <Check size={10} className="text-black shrink-0" />}
                 </div>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Sliders Deck */}
-        <div className="flex flex-col gap-4 border-t border-zinc-900 pt-4 grow">
-          <span className="text-[10px] text-zinc-400 font-mono uppercase tracking-widest">
-            Manual Color Corrector
-          </span>
+        {/* Sliders */}
+        <div className="flex flex-col gap-3 sm:gap-4 border-t border-zinc-900 pt-4">
+          <span className="text-[10px] text-zinc-400 font-mono uppercase tracking-widest">Manual Color Corrector</span>
 
-          {/* Slider: Contrast */}
-          <div className="flex flex-col gap-1">
-            <div className="flex justify-between text-xs font-mono">
-              <span className="text-zinc-400">Contrast</span>
-              <span className="text-white">{settings.contrast}%</span>
+          {[
+            { label: 'Contrast', key: 'contrast' as const, min: 50, max: 200, unit: '%' },
+            { label: 'Exposure', key: 'exposure' as const, min: 50, max: 150, unit: '%' },
+            { label: 'Film Grain', key: 'filmGrain' as const, min: 0, max: 70, unit: '%' },
+            { label: 'Vignette', key: 'vignette' as const, min: 0, max: 85, unit: '%' },
+            { label: 'Depth-Of-Field', key: 'blur' as const, min: 0, max: 6, unit: 'px' },
+          ].map(({ label, key, min, max, unit }) => (
+            <div key={key} className="flex flex-col gap-1">
+              <div className="flex justify-between text-[11px] font-mono">
+                <span className="text-zinc-400">{label}</span>
+                <span className="text-white">{settings[key]}{unit}</span>
+              </div>
+              <input
+                type="range" min={min} max={max}
+                value={settings[key] as number}
+                onChange={(e) => updateSetting(key, parseInt(e.target.value))}
+                className="accent-white h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer w-full"
+              />
             </div>
-            <input
-              type="range"
-              min="50"
-              max="200"
-              value={settings.contrast}
-              onChange={(e) => updateSetting('contrast', parseInt(e.target.value))}
-              className="accent-white h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
-            />
-          </div>
-
-          {/* Slider: Exposure */}
-          <div className="flex flex-col gap-1">
-            <div className="flex justify-between text-xs font-mono">
-              <span className="text-zinc-400">Exposure (Brightness)</span>
-              <span className="text-white">{settings.exposure}%</span>
-            </div>
-            <input
-              type="range"
-              min="50"
-              max="150"
-              value={settings.exposure}
-              onChange={(e) => updateSetting('exposure', parseInt(e.target.value))}
-              className="accent-white h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
-            />
-          </div>
-
-          {/* Slider: Film Grain */}
-          <div className="flex flex-col gap-1">
-            <div className="flex justify-between text-xs font-mono">
-              <span className="text-zinc-400">Film Grain (Noise)</span>
-              <span className="text-white">{settings.filmGrain}%</span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="70"
-              value={settings.filmGrain}
-              onChange={(e) => updateSetting('filmGrain', parseInt(e.target.value))}
-              className="accent-white h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
-            />
-          </div>
-
-          {/* Slider: Vignette */}
-          <div className="flex flex-col gap-1">
-            <div className="flex justify-between text-xs font-mono">
-              <span className="text-zinc-400">Vignette (Corner Shadows)</span>
-              <span className="text-white">{settings.vignette}%</span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="85"
-              value={settings.vignette}
-              onChange={(e) => updateSetting('vignette', parseInt(e.target.value))}
-              className="accent-white h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
-            />
-          </div>
-
-          {/* Slider: Blur (Depth-Of-Field) */}
-          <div className="flex flex-col gap-1">
-            <div className="flex justify-between text-xs font-mono">
-              <span className="text-zinc-400">Aperture Depth-Of-Field (Blur)</span>
-              <span className="text-white">{settings.blur}px</span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="6"
-              value={settings.blur}
-              onChange={(e) => updateSetting('blur', parseInt(e.target.value))}
-              className="accent-white h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
-            />
-          </div>
+          ))}
         </div>
 
-        {/* Educational Info box */}
+        {/* Info box */}
         <div className="p-3 bg-zinc-950 border border-zinc-900 rounded-lg text-[10px] text-zinc-500 leading-relaxed font-mono">
           <div className="text-zinc-400 font-bold mb-1 flex items-center gap-1">
             <ZoomIn size={10} /> DKV INSIGHT:
           </div>
-          Preset <strong className="text-zinc-300">Film Noir Klasik</strong> memaksimalkan kontras wajah vs background. <strong className="text-zinc-300">Mimpi Kunci Tinggi</strong> mengangkat seluruh shadow sehingga detail seragam terlihat. <strong className="text-zinc-300">Arang Hangat</strong> memberikan tonal graphite kecokelatan yang cocok untuk foto portrait natural.
+          <strong className="text-zinc-300">Film Noir</strong> — kontras wajah maksimal. <strong className="text-zinc-300">High Key</strong> — shadow terangkat, dreamy. <strong className="text-zinc-300">Arang Hangat</strong> — tonal graphite kecokelatan natural.
         </div>
       </div>
     </div>

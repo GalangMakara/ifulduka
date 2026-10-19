@@ -123,162 +123,123 @@ export default function Storyboards({ soundOn }: StoryboardsProps) {
   const analysis = getDirectorAnalysis();
 
   return (
-    <div id="storyboard-sequencer" className="bg-zinc-950 border border-zinc-900 p-6 rounded-2xl flex flex-col gap-6 text-white font-sans">
+    <div id="storyboard-sequencer" className="bg-zinc-950 border border-zinc-900 p-4 sm:p-6 rounded-2xl flex flex-col gap-5 sm:gap-6 text-white font-sans">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div className="flex items-center gap-2.5">
-          <Film className="text-white" size={18} />
+          <Film className="text-white" size={16} />
           <div>
             <h3 className="font-bold text-sm tracking-wider uppercase">Shot Director Sequencer</h3>
-            <p className="text-[10px] text-zinc-500 font-mono">URUTKAN SHOT UNTUK MENENTUKAN RITME NALARIA SINEMA</p>
+            <p className="text-[9px] text-zinc-500 font-mono">URUTKAN SHOT UNTUK MENENTUKAN RITME NARASI SINEMA</p>
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <button
-            onClick={randomizeSequence}
-            className="flex items-center gap-1.5 text-[10px] text-zinc-400 hover:text-white transition-colors uppercase border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-md font-mono"
-          >
-            Acak Urutan
+        <div className="flex gap-2 self-end sm:self-auto">
+          <button onClick={randomizeSequence}
+            className="flex items-center gap-1.5 text-[10px] text-zinc-400 hover:text-white transition-colors uppercase border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-md font-mono">
+            Acak
           </button>
-          <button
-            onClick={resetSequence}
-            className="flex items-center gap-1.5 text-[10px] text-zinc-400 hover:text-white transition-colors uppercase border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-md font-mono"
-            title="Reset ke struktur klasik"
-          >
+          <button onClick={resetSequence}
+            className="flex items-center gap-1.5 text-[10px] text-zinc-400 hover:text-white transition-colors uppercase border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-md font-mono">
             <RefreshCw size={10} /> Reset
           </button>
         </div>
       </div>
 
-      {/* Main Draggable/Swappable Shot Row */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 py-2">
+      {/* Shot cards — 2-col on mobile, 4-col on md+ */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 py-2">
         <AnimatePresence mode="popLayout">
-          {shots.map((shot, index) => {
-            // High-contrast SVG-based simple icons representing shot styles
-            return (
-              <motion.div
-                key={shot.id}
-                layout
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                className="bg-black border border-zinc-800 rounded-xl overflow-hidden flex flex-col justify-between group hover:border-zinc-500 transition-colors"
-              >
-                {/* Visual Thumbnail simulation (Monochrome line art or abstract representation) */}
-                <div className="aspect-video bg-zinc-900 relative flex items-center justify-center p-4 overflow-hidden border-b border-zinc-900">
-                  <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/60 pointer-events-none" />
-                  
-                  {/* Mock Camera Viewfinder Overlay */}
-                  <div className="absolute top-1.5 left-1.5 text-[7px] font-mono text-zinc-500">CH {index + 1}</div>
-                  <div className="absolute top-1.5 right-1.5 text-[7px] font-mono text-zinc-500">24FPS</div>
-                  
-                  {/* Dynamic Abstract Graphics based on Shot type */}
-                  {shot.id === 'shot-1' && (
-                    <svg className="w-16 h-12 text-zinc-600 opacity-60" viewBox="0 0 100 60" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <path d="M10 50 L30 30 L40 40 L70 10 L90 50 Z" />
-                      <path d="M5 50 H95" />
-                      <circle cx="80" cy="20" r="4" strokeDasharray="2 2" />
-                    </svg>
-                  )}
-                  {shot.id === 'shot-2' && (
-                    <svg className="w-16 h-12 text-zinc-600 opacity-60" viewBox="0 0 100 60" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <circle cx="50" cy="25" r="10" />
-                      <path d="M30 50 C30 40, 70 40, 70 50" />
-                    </svg>
-                  )}
-                  {shot.id === 'shot-3' && (
-                    <svg className="w-16 h-12 text-zinc-600 opacity-60" viewBox="0 0 100 60" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <circle cx="25" cy="20" r="6" />
-                      <path d="M15 35 C15 28, 35 28, 35 35" />
-                      <rect x="55" y="15" width="25" height="15" rx="2" />
-                      <circle cx="67" cy="35" r="3" />
-                    </svg>
-                  )}
-                  {shot.id === 'shot-4' && (
-                    <svg className="w-16 h-12 text-zinc-600 opacity-60" viewBox="0 0 100 60" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <circle cx="50" cy="30" r="15" strokeDasharray="3 3" />
-                      <circle cx="50" cy="30" r="8" />
-                      <circle cx="50" cy="30" r="3" />
-                      <line x1="20" y1="10" x2="80" y2="50" />
-                    </svg>
-                  )}
-                  
-                  {/* Indicator Title Overlay */}
-                  <div className="absolute bottom-2 left-2 right-2 bg-black/80 px-2 py-1 border border-zinc-800 rounded text-[9px] font-mono text-zinc-300">
-                    {shot.framing}
-                  </div>
+          {shots.map((shot, index) => (
+            <motion.div
+              key={shot.id}
+              layout
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className="bg-black border border-zinc-800 rounded-xl overflow-hidden flex flex-col justify-between group hover:border-zinc-500 transition-colors"
+            >
+              {/* Thumbnail */}
+              <div className="aspect-video bg-zinc-900 relative flex items-center justify-center p-3 overflow-hidden border-b border-zinc-900">
+                <div className="absolute top-1.5 left-1.5 text-[7px] font-mono text-zinc-500">CH {index + 1}</div>
+                <div className="absolute top-1.5 right-1.5 text-[7px] font-mono text-zinc-500">24FPS</div>
+                
+                {shot.id === 'shot-1' && (
+                  <svg className="w-12 h-10 sm:w-16 sm:h-12 text-zinc-600 opacity-60" viewBox="0 0 100 60" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M10 50 L30 30 L40 40 L70 10 L90 50 Z" /><path d="M5 50 H95" /><circle cx="80" cy="20" r="4" strokeDasharray="2 2" />
+                  </svg>
+                )}
+                {shot.id === 'shot-2' && (
+                  <svg className="w-12 h-10 sm:w-16 sm:h-12 text-zinc-600 opacity-60" viewBox="0 0 100 60" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <circle cx="50" cy="25" r="10" /><path d="M30 50 C30 40, 70 40, 70 50" />
+                  </svg>
+                )}
+                {shot.id === 'shot-3' && (
+                  <svg className="w-12 h-10 sm:w-16 sm:h-12 text-zinc-600 opacity-60" viewBox="0 0 100 60" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <circle cx="25" cy="20" r="6" /><path d="M15 35 C15 28, 35 28, 35 35" /><rect x="55" y="15" width="25" height="15" rx="2" /><circle cx="67" cy="35" r="3" />
+                  </svg>
+                )}
+                {shot.id === 'shot-4' && (
+                  <svg className="w-12 h-10 sm:w-16 sm:h-12 text-zinc-600 opacity-60" viewBox="0 0 100 60" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <circle cx="50" cy="30" r="15" strokeDasharray="3 3" /><circle cx="50" cy="30" r="8" /><circle cx="50" cy="30" r="3" /><line x1="20" y1="10" x2="80" y2="50" />
+                  </svg>
+                )}
+                
+                <div className="absolute bottom-1.5 left-1.5 right-1.5 bg-black/80 px-1.5 py-0.5 border border-zinc-800 rounded text-[7px] sm:text-[9px] font-mono text-zinc-300 truncate">
+                  {shot.framing}
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-2.5 sm:p-3 flex flex-col gap-1 grow justify-between">
+                <div>
+                  <span className="text-[8px] font-mono text-zinc-500 block uppercase truncate">{shot.angle}</span>
+                  <h4 className="font-bold text-[10px] sm:text-xs text-white mb-1 leading-tight">{shot.type}</h4>
+                  <p className="text-[9px] sm:text-[10px] text-zinc-400 leading-normal line-clamp-2">{shot.description}</p>
                 </div>
 
-                {/* Content info */}
-                <div className="p-3 flex flex-col gap-1.5 grow justify-between">
-                  <div>
-                    <span className="text-[9px] font-mono text-zinc-500 block uppercase">{shot.angle}</span>
-                    <h4 className="font-bold text-xs text-white mb-1 group-hover:text-zinc-300 transition-colors">{shot.type}</h4>
-                    <p className="text-[10px] text-zinc-400 leading-normal">{shot.description}</p>
-                  </div>
-
-                  {/* Left-Right Swap Buttons */}
-                  <div className="flex justify-between items-center border-t border-zinc-900 pt-2.5 mt-2">
-                    <button
-                      onClick={() => moveLeft(index)}
-                      disabled={index === 0}
-                      className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded ${
-                        index === 0 
-                          ? 'text-zinc-700 cursor-not-allowed' 
-                          : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
-                      }`}
-                    >
-                      &larr; Kiri
-                    </button>
-                    <span className="text-[9px] font-mono text-zinc-600 font-bold">POSISI 0{index + 1}</span>
-                    <button
-                      onClick={() => moveRight(index)}
-                      disabled={index === shots.length - 1}
-                      className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded ${
-                        index === shots.length - 1 
-                          ? 'text-zinc-700 cursor-not-allowed' 
-                          : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
-                      }`}
-                    >
-                      Kanan &rarr;
-                    </button>
-                  </div>
+                {/* Swap Buttons */}
+                <div className="flex justify-between items-center border-t border-zinc-900 pt-2 mt-1.5">
+                  <button onClick={() => moveLeft(index)} disabled={index === 0}
+                    className={`text-[9px] font-mono uppercase px-1 py-0.5 rounded ${index === 0 ? 'text-zinc-700 cursor-not-allowed' : 'text-zinc-400 hover:text-white hover:bg-zinc-900'}`}>
+                    ← 
+                  </button>
+                  <span className="text-[8px] font-mono text-zinc-600 font-bold">0{index + 1}</span>
+                  <button onClick={() => moveRight(index)} disabled={index === shots.length - 1}
+                    className={`text-[9px] font-mono uppercase px-1 py-0.5 rounded ${index === shots.length - 1 ? 'text-zinc-700 cursor-not-allowed' : 'text-zinc-400 hover:text-white hover:bg-zinc-900'}`}>
+                    →
+                  </button>
                 </div>
-              </motion.div>
-            );
-          })}
+              </div>
+            </motion.div>
+          ))}
         </AnimatePresence>
       </div>
 
-      {/* Narrative flow connectors */}
+      {/* Narrative flow connectors — desktop only */}
       <div className="hidden md:flex justify-around items-center px-8 text-zinc-700">
         <ArrowRight size={14} className="animate-pulse" />
         <ArrowRight size={14} className="animate-pulse" />
         <ArrowRight size={14} className="animate-pulse" />
       </div>
 
-      {/* ANALYSIS BOARD */}
-      <div className="bg-black border border-zinc-800 p-5 rounded-xl flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-        <div className="flex flex-col gap-1 md:w-3/4">
-          <div className="flex items-center gap-2">
-            <Sparkles size={14} className="text-white animate-pulse" />
-            <h4 className="text-xs font-bold font-mono text-zinc-300 uppercase tracking-wider">
-              Analis Ritme Sutradara (Shot Sequence Evaluation)
-            </h4>
-          </div>
-          <span className="text-white font-bold text-sm tracking-tight mt-1">{analysis.title}</span>
-          <p className="text-xs text-zinc-400 leading-relaxed mt-1">
-            {analysis.description}
-          </p>
+      {/* Analysis Board */}
+      <div className="bg-black border border-zinc-800 p-4 sm:p-5 rounded-xl flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+          <Sparkles size={13} className="text-white animate-pulse" />
+          <h4 className="text-[11px] font-bold font-mono text-zinc-300 uppercase tracking-wider">
+            Analis Ritme Sutradara
+          </h4>
         </div>
-
-        <div className="flex flex-col bg-zinc-900/60 border border-zinc-800 p-3 rounded-lg md:text-right text-left shrink-0 font-mono">
-          <span className="text-[9px] text-zinc-500">PACE & KETEGANAN</span>
-          <span className="text-white text-xs font-bold mt-0.5">{analysis.pacing}</span>
-          <span className="text-[8px] text-zinc-600 mt-1">DKV JAKARTA FILM DEPT</span>
+        <span className="text-white font-bold text-sm tracking-tight">{analysis.title}</span>
+        <p className="text-[11px] text-zinc-400 leading-relaxed">{analysis.description}</p>
+        <div className="flex items-center justify-between border-t border-zinc-900 pt-3 mt-1">
+          <div className="flex flex-col font-mono">
+            <span className="text-[9px] text-zinc-500">PACE & KETEGANGAN</span>
+            <span className="text-white text-[11px] font-bold mt-0.5">{analysis.pacing}</span>
+          </div>
+          <span className="text-[8px] text-zinc-600 font-mono">DKV FILM DEPT</span>
         </div>
       </div>
     </div>
