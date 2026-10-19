@@ -36,7 +36,7 @@ import ThreeDCard from './components/ThreeDCard';
 import { synth } from './utils/audio';
 
 // Generated cinematic assets as static URLs
-const faceImg = '/src/assets/images/videographer_face_1784174656219.jpg';
+const faceImg = '/saiful-profile.jpg';
 const musicImg = '/src/assets/images/music_video_thumbnail_1784174671197.jpg';
 const shortImg = '/src/assets/images/short_film_thumbnail_1784174682927.jpg';
 const commImg = '/src/assets/images/commercial_thumbnail_1784174696915.jpg';
